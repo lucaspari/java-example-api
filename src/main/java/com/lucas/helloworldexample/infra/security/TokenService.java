@@ -36,7 +36,7 @@ public class TokenService {
             .withIssuer("auth0")
                     .build().verify(token).getSubject();
         } catch (Exception exception) {
-            throw new RuntimeException(exception);
+            return null;
         }
     }
 }
