@@ -5,6 +5,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -16,10 +17,9 @@ import java.io.IOException;
 import java.util.Collections;
 
 @Component
+@AllArgsConstructor
 public class SecurityFilter extends OncePerRequestFilter {
-    @Autowired
     private TokenService tokenService;
-    @Autowired
     private UserRepository userRepository;
 
     @Override
@@ -29,9 +29,10 @@ public class SecurityFilter extends OncePerRequestFilter {
         String token = recoverToken(request);
         var login = tokenService.validateToken(token);
         if(login != null){
+            System.out.println("Login: " + login);
             var user = userRepository.findByUsername(login).orElseThrow(() -> new RuntimeException("User not found"));
             var authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
-            var authentication = new UsernamePasswordAuthenticationToken(null, authorities);
+            var authentication = new UsernamePasswordAuthenticationToken(user,null, authorities);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
         filterChain.doFilter(request, response);
