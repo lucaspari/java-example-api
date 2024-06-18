@@ -3,6 +3,7 @@ package com.lucas.helloworldexample.controller;
 import com.lucas.helloworldexample.domain.User;
 import com.lucas.helloworldexample.infra.security.TokenService;
 import com.lucas.helloworldexample.repositories.UserRepository;
+import com.lucas.helloworldexample.services.UserServices;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,16 +15,17 @@ import org.springframework.web.bind.annotation.RestController;
 @AllArgsConstructor
 public class AuthController {
     private final TokenService tokenService;
-    private final UserRepository userRepository;
+    private final UserServices userServices;
 
     @PostMapping("/auth")
-    public ResponseEntity<String> login(@RequestBody User user){
-       var token = tokenService.generateToken(user);
-       userRepository.save(user);
-         return ResponseEntity.ok(token);
+    public ResponseEntity<String> login(@RequestBody User user) {
+        var token = tokenService.generateToken(user);
+        userServices.save(user);
+        return ResponseEntity.ok(token);
     }
+
     @GetMapping("/validate")
-    public String authenticated(){
-       return "authenticated";
+    public String authenticated() {
+        return "authenticated";
     }
 }
