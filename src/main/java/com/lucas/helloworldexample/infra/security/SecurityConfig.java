@@ -16,6 +16,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @AllArgsConstructor
 public class SecurityConfig {
     SecurityFilter securityFilter;
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.cors(AbstractHttpConfigurer::disable)
@@ -24,7 +25,7 @@ public class SecurityConfig {
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 ).authorizeHttpRequests(authorize ->
                         authorize.
-                                requestMatchers("/hello", "/auth/**","/h2-console/**").permitAll()
+                                requestMatchers("/hello", "/auth/**", "/h2-console/**").permitAll()
                                 .anyRequest().authenticated()).addFilterBefore(securityFilter,
                         UsernamePasswordAuthenticationFilter.class);
         return http.build();

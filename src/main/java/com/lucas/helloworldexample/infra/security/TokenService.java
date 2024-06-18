@@ -25,6 +25,7 @@ public class TokenService {
             throw new RuntimeException(exception);
         }
     }
+
     private Instant getExpirationTime() {
         return Instant.now().plusSeconds(3600);
     }
@@ -33,7 +34,7 @@ public class TokenService {
         try {
             Algorithm algorithm = Algorithm.HMAC256(SECRET);
             return JWT.require(algorithm)
-            .withIssuer("auth0")
+                    .withIssuer("auth0")
                     .build().verify(token).getSubject();
         } catch (Exception exception) {
             return null;

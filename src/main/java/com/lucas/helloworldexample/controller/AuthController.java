@@ -2,7 +2,6 @@ package com.lucas.helloworldexample.controller;
 
 import com.lucas.helloworldexample.domain.User;
 import com.lucas.helloworldexample.infra.security.TokenService;
-import com.lucas.helloworldexample.repositories.UserRepository;
 import com.lucas.helloworldexample.services.UserServices;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
